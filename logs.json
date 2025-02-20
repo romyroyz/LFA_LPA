@@ -1,0 +1,27 @@
+[
+    {
+        "date": "January 25, 2025",
+        "protocol": "Prepared test strips with new antibody concentration...",
+        "observation": "Test line appeared faint, control line was missing...",
+        "image": "https://example.com/image1.jpg",
+        "troubleshooting": [
+            {"Risk Factor": "Vortexing", "Risk Level": "Low", "Possible Reason": "Protein degradation", "Mitigation": "Vortex at low speed"},
+            {"Risk Factor": "Sample Pad", "Risk Level": "High", "Possible Reason": "Too thick", "Mitigation": "Reduce casein concentration to 0.5%"}
+        ],
+        "major_problem": "Weak test line, no control line",
+        "assumption": "Secondary antibody concentration is too low",
+        "next_protocol_fixes": "Increase secondary antibody concentration"
+    },
+    {
+        "date": "January 26, 2025",
+        "protocol": "Adjusted buffer pH to improve antibody interaction...",
+        "observation": "Flow rate improved, but test line still weak...",
+        "image": "https://example.com/image2.jpg",
+        "troubleshooting": [
+            {"Risk Factor": "Buffer pH", "Risk Level": "Moderate", "Possible Reason": "Too acidic", "Mitigation": "Adjust to pH 7.4"}
+        ],
+        "major_problem": "Background noise in results",
+        "assumption": "Buffer needs further optimization",
+        "next_protocol_fixes": "Try a different blocking agent"
+    }
+]
