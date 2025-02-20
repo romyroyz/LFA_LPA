@@ -5,15 +5,60 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LFA Daily Log</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; padding: 20px; }
-        h1 { text-align: center; }
-        .container { max-width: 800px; margin: auto; }
-        .top-right { text-align: right; }
-        button { padding: 10px 15px; cursor: pointer; }
-        .entry { border: 1px solid #ccc; padding: 15px; margin: 15px 0; background: #f9f9f9; }
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-        th { background: #f2f2f2; }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        button {
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+        .entry {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin: 15px 0;
+            background: #f9f9f9;
+        }
+        .form-container {
+            display: none;
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin-top: 10px;
+            background: #fff;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+        textarea, input, select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background: #f2f2f2;
+        }
         .risk-low { background-color: lightgreen; }
         .risk-moderate { background-color: yellow; }
         .risk-high { background-color: red; color: white; }
@@ -22,12 +67,12 @@
 <body>
 
 <div class="container">
-    <h1>LFA Daily Log</h1>
-    <div class="top-right">
+    <div class="header">
+        <h1>LFA Daily Log</h1>
         <button onclick="showForm()">Add Today's Log</button>
     </div>
 
-    <div id="logFormContainer" style="display:none;">
+    <div id="logFormContainer" class="form-container">
         <h2>Add Log Entry</h2>
         <form id="logForm">
             <label>Date:</label>
