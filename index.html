@@ -3,139 +3,149 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LFA Daily Log</title>
+    <title>Lipo Protein A LFA Development Daily Log</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; padding: 20px; }
-        h1 { text-align: center; }
-        .container { max-width: 800px; margin: auto; }
+        body { font-family: Arial, sans-serif; display: flex; margin: 0; padding: 0; }
+        h1 { text-align: center; color: #333; }
+
+        /* Sidebar Styling */
+        .sidebar { width: 20%; background: #2C3E50; padding: 15px; height: 100vh; color: white; overflow-y: auto; }
+        .sidebar h2 { text-align: center; margin-bottom: 10px; }
+        .month { font-weight: bold; margin-top: 10px; font-size: 16px; }
+        .date { padding: 5px; cursor: pointer; display: block; color: white; text-decoration: none; }
+        .date:hover { background: #1ABC9C; }
+        .active-month { background: #1ABC9C; padding: 5px; }
+
+        /* Main Content */
+        .container { width: 60%; padding: 20px; }
         label { font-weight: bold; display: block; margin-top: 10px; }
         textarea, input, select { width: 100%; padding: 8px; margin-top: 5px; }
-        button { padding: 10px 15px; margin-top: 10px; cursor: pointer; }
+        button { padding: 10px 15px; margin-top: 10px; cursor: pointer; background: #3498DB; color: white; border: none; }
         .entry { border: 1px solid #ccc; padding: 15px; margin: 15px 0; background: #f9f9f9; }
         .bold { font-weight: bold; margin-top: 10px; }
+
+        /* Troubleshooting Table */
         table { width: 100%; border-collapse: collapse; margin-top: 10px; }
         th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
         th { background: #f2f2f2; }
+
+        /* Risk Level Colors */
+        .low { background: #2ECC71; color: white; }
+        .moderate { background: #F1C40F; color: black; }
+        .high { background: #E74C3C; color: white; }
+
+        /* Right Sidebar */
+        .right-sidebar { width: 20%; background: #ECF0F1; padding: 15px; height: 100vh; overflow-y: auto; }
+        .log-list { margin-bottom: 10px; cursor: pointer; padding: 5px; border-bottom: 1px solid #BDC3C7; }
+        .log-list:hover { background: #BDC3C7; }
+        .collapse { display: none; }
+
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>LFA Daily Log</h1>
+    <!-- Left Sidebar -->
+    <div class="sidebar">
+        <h2>LFA Log</h2>
+        <div class="active-month">February 2025</div>
+        <a class="date" href="#">1 Feb</a>
+        <a class="date" href="#">2 Feb</a>
+        <div class="month">January 2025</div>
+        <a class="date" href="#">1 Jan</a>
+        <a class="date" href="#">2 Jan</a>
+    </div>
 
-    <form id="logForm">
-        <label>Date:</label>
-        <input type="date" id="date" required>
+    <!-- Main Content -->
+    <div class="container">
+        <h1>Lipo Protein A LFA Development Daily Log</h1>
 
-        <label>Objective:</label>
-        <textarea id="objective" rows="3" required></textarea>
+        <form id="logForm">
+            <label>Date:</label>
+            <input type="date" id="date" required>
 
-        <label>Protocol:</label>
-        <textarea id="protocol" rows="6" placeholder="Example:&#10;Sample Pad Treatment:&#10;- Buffer: PBS&#10;- Surfactant: Tween-20" required></textarea>
+            <label>Objective:</label>
+            <textarea id="objective" rows="3" required></textarea>
 
-        <label>Observation (Image Link):</label>
-        <input type="text" id="imageLink" placeholder="Enter image URL">
+            <label>Protocol:</label>
+            <textarea id="protocol" rows="6" placeholder="Sample Pad Treatment:\n- Buffer: PBS\n- Surfactant: Tween-20" required></textarea>
 
-        <label>Inference:</label>
-        <textarea id="inference" rows="3" required></textarea>
+            <label>Observation:</label>
+            <textarea id="observation" rows="3" required></textarea>
 
-        <label>Troubleshooting:</label>
-        <table id="troubleTable">
-            <tr>
-                <th>Risk Factor</th>
-                <th>Risk Level</th>
-                <th>Explanation</th>
-                <th>Mitigation Strategy</th>
-                <th>Remove</th>
-            </tr>
-        </table>
-        <button type="button" onclick="addTroubleRow()">Add Troubleshooting</button>
+            <label>Observation Image (URL):</label>
+            <input type="text" id="imageLink" placeholder="Enter image URL">
 
-        <label>Most Likely Problem:</label>
-        <textarea id="mostLikelyProblem" rows="3" required></textarea>
+            <label>Inference:</label>
+            <textarea id="inference" rows="3" required></textarea>
 
-        <label>Fixes to Add in Next Protocol:</label>
-        <textarea id="nextFixes" rows="3" required></textarea>
-
-        <button type="submit">Submit Log</button>
-    </form>
-
-    <h2>Log Entries</h2>
-    <div id="logEntries"></div>
-</div>
-
-<script>
-    document.getElementById("logForm").addEventListener("submit", function(event) {
-        event.preventDefault();
-
-        let date = document.getElementById("date").value;
-        let objective = document.getElementById("objective").value;
-        let protocol = document.getElementById("protocol").value;
-        let imageLink = document.getElementById("imageLink").value;
-        let inference = document.getElementById("inference").value;
-        let mostLikelyProblem = document.getElementById("mostLikelyProblem").value;
-        let nextFixes = document.getElementById("nextFixes").value;
-
-        let troubleshooting = [];
-        document.querySelectorAll("#troubleTable tr[data-row]").forEach(row => {
-            troubleshooting.push({
-                factor: row.cells[0].innerText,
-                level: row.cells[1].innerText,
-                explanation: row.cells[2].innerText,
-                strategy: row.cells[3].innerText
-            });
-        });
-
-        let logEntry = document.createElement("div");
-        logEntry.classList.add("entry");
-        logEntry.innerHTML = `
-            <h3>${date}</h3>
-            <p><span class="bold">Objective:</span> ${objective}</p>
-            <p><span class="bold">Protocol:</span><br>${protocol.replace(/\n/g, "<br>")}</p>
-            ${imageLink ? `<p><span class="bold">Observation:</span> <a href="${imageLink}" target="_blank">View Image</a></p>` : ""}
-            <p><span class="bold">Inference:</span> ${inference}</p>
-            <p><span class="bold">Most Likely Problem:</span> ${mostLikelyProblem}</p>
-            <p><span class="bold">Fixes to Add in Next Protocol:</span> ${nextFixes}</p>
-            ${troubleshooting.length > 0 ? `<p><span class="bold">Troubleshooting:</span></p>
-            <table>
+            <label>Troubleshooting:</label>
+            <table id="troubleTable">
                 <tr>
                     <th>Risk Factor</th>
                     <th>Risk Level</th>
                     <th>Explanation</th>
                     <th>Mitigation Strategy</th>
+                    <th>Remove</th>
                 </tr>
-                ${troubleshooting.map(tr => `<tr><td>${tr.factor}</td><td>${tr.level}</td><td>${tr.explanation}</td><td>${tr.strategy}</td></tr>`).join('')}
-            </table>` : ""}
-        `;
+            </table>
+            <button type="button" onclick="addTroubleRow()">Add Troubleshooting</button>
 
-        document.getElementById("logEntries").prepend(logEntry);
-        document.getElementById("logForm").reset();
-        document.querySelectorAll("#troubleTable tr[data-row]").forEach(row => row.remove());
-    });
+            <label>Most Likely Problem:</label>
+            <textarea id="mostLikelyProblem" rows="3" required></textarea>
 
-    function addTroubleRow() {
-        let table = document.getElementById("troubleTable");
-        let row = table.insertRow();
-        row.setAttribute("data-row", "true");
-        row.innerHTML = `
-            <td contenteditable="true"></td>
-            <td contenteditable="true">
-                <select>
-                    <option>Low</option>
-                    <option>Moderate</option>
-                    <option>High</option>
-                </select>
-            </td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td><button onclick="removeRow(this)">X</button></td>
-        `;
-    }
+            <label>Fixes to Add in Next Protocol:</label>
+            <textarea id="nextFixes" rows="3" required></textarea>
 
-    function removeRow(button) {
-        button.parentElement.parentElement.remove();
-    }
-</script>
+            <button type="submit">Submit Log</button>
+        </form>
+
+        <h2>Log Entries</h2>
+        <div id="logEntries"></div>
+    </div>
+
+    <!-- Right Sidebar -->
+    <div class="right-sidebar">
+        <h3>Latest Log</h3>
+        <div class="log-list">February 18, 2025</div>
+        <h3>Previous Logs</h3>
+        <div class="log-list" onclick="toggleCollapse(this)">February 17, 2025</div>
+        <div class="collapse">Details of Feb 17 log...</div>
+    </div>
+
+    <script>
+        function addTroubleRow() {
+            let table = document.getElementById("troubleTable");
+            let row = table.insertRow();
+            row.setAttribute("data-row", "true");
+            row.innerHTML = `
+                <td contenteditable="true"></td>
+                <td>
+                    <select onchange="colorCodeRisk(this)">
+                        <option value="low">Low</option>
+                        <option value="moderate">Moderate</option>
+                        <option value="high">High</option>
+                    </select>
+                </td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td><button onclick="removeRow(this)">X</button></td>
+            `;
+        }
+
+        function removeRow(button) {
+            button.parentElement.parentElement.remove();
+        }
+
+        function colorCodeRisk(select) {
+            let row = select.parentElement.parentElement;
+            row.className = select.value;
+        }
+
+        function toggleCollapse(element) {
+            let next = element.nextElementSibling;
+            next.style.display = (next.style.display === "block") ? "none" : "block";
+        }
+    </script>
 
 </body>
 </html>
