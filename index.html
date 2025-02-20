@@ -3,69 +3,138 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daily LFA Logs</title>
+    <title>LFA Daily Log</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 20px; padding: 20px; }
         h1 { text-align: center; }
-        .log-entry { border: 1px solid #ccc; padding: 15px; margin: 15px 0; background: #f9f9f9; }
-        .date-anchor { display: block; padding: 10px; background: #ddd; text-decoration: none; margin-bottom: 5px; }
-        .date-anchor:hover { background: #bbb; }
-        .sidebar { position: fixed; left: 0; top: 0; width: 200px; height: 100%; background: #eee; padding: 10px; overflow-y: auto; }
-        .content { margin-left: 220px; padding: 10px; }
+        .container { max-width: 800px; margin: auto; }
+        label { font-weight: bold; display: block; margin-top: 10px; }
+        textarea, input, select { width: 100%; padding: 8px; margin-top: 5px; }
+        button { padding: 10px 15px; margin-top: 10px; cursor: pointer; }
+        .entry { border: 1px solid #ccc; padding: 15px; margin: 15px 0; background: #f9f9f9; }
+        .bold { font-weight: bold; margin-top: 10px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background: #f2f2f2; }
     </style>
 </head>
 <body>
 
-<div class="sidebar">
-    <h3>Logs</h3>
-    <div id="log-dates"></div>
-</div>
+<div class="container">
+    <h1>LFA Daily Log</h1>
 
-<div class="content">
-    <h1>LFA Daily Logs</h1>
-    <div id="logs-container"></div>
+    <form id="logForm">
+        <label>Date:</label>
+        <input type="date" id="date" required>
+
+        <label>Objective:</label>
+        <textarea id="objective" rows="3" required></textarea>
+
+        <label>Protocol:</label>
+        <textarea id="protocol" rows="6" placeholder="Example:&#10;Sample Pad Treatment:&#10;- Buffer: PBS&#10;- Surfactant: Tween-20" required></textarea>
+
+        <label>Observation (Image Link):</label>
+        <input type="text" id="imageLink" placeholder="Enter image URL">
+
+        <label>Inference:</label>
+        <textarea id="inference" rows="3" required></textarea>
+
+        <label>Troubleshooting:</label>
+        <table id="troubleTable">
+            <tr>
+                <th>Risk Factor</th>
+                <th>Risk Level</th>
+                <th>Explanation</th>
+                <th>Mitigation Strategy</th>
+                <th>Remove</th>
+            </tr>
+        </table>
+        <button type="button" onclick="addTroubleRow()">Add Troubleshooting</button>
+
+        <label>Most Likely Problem:</label>
+        <textarea id="mostLikelyProblem" rows="3" required></textarea>
+
+        <label>Fixes to Add in Next Protocol:</label>
+        <textarea id="nextFixes" rows="3" required></textarea>
+
+        <button type="submit">Submit Log</button>
+    </form>
+
+    <h2>Log Entries</h2>
+    <div id="logEntries"></div>
 </div>
 
 <script>
-    async function loadLogs() {
-        try {
-            const response = await fetch("logs.json");
-            const logs = await response.json();
-            const logContainer = document.getElementById("logs-container");
-            const dateContainer = document.getElementById("log-dates");
+    document.getElementById("logForm").addEventListener("submit", function(event) {
+        event.preventDefault();
 
-            logs.forEach(log => {
-                let logEntry = document.createElement("div");
-                logEntry.classList.add("log-entry");
-                logEntry.innerHTML = `
-                    <h2 id="${log.date}">${log.date}</h2>
-                    <p><strong>Objective:</strong> ${log.objective || log.plan}</p>
-                    ${log.sample_pad_treatment ? `<h3>Sample Pad Treatment</h3>
-                    <ul>
-                        <li><strong>Buffer:</strong> ${log.sample_pad_treatment.buffer}</li>
-                        <li><strong>Surfactant:</strong> ${log.sample_pad_treatment.surfactant}</li>
-                        <li><strong>Blocking Agent:</strong> ${log.sample_pad_treatment.blocking_agent}</li>
-                        <li><strong>Drying Conditions:</strong> ${log.sample_pad_treatment.drying_conditions}</li>
-                    </ul>` : ''}
-                    ${log.troubleshooting ? `<h3>Troubleshooting</h3>
-                    <ul>${log.troubleshooting.risk_factors.map(risk => `<li><strong>${risk.factor}:</strong> ${risk.mitigation_strategy}</li>`).join("")}</ul>` : ""}
-                    ${log.image ? `<p><strong>Observation Image:</strong> <a href="${log.image}" target="_blank">View</a></p>` : ""}
-                `;
-                logContainer.appendChild(logEntry);
+        let date = document.getElementById("date").value;
+        let objective = document.getElementById("objective").value;
+        let protocol = document.getElementById("protocol").value;
+        let imageLink = document.getElementById("imageLink").value;
+        let inference = document.getElementById("inference").value;
+        let mostLikelyProblem = document.getElementById("mostLikelyProblem").value;
+        let nextFixes = document.getElementById("nextFixes").value;
 
-                let dateLink = document.createElement("a");
-                dateLink.href = `#${log.date}`;
-                dateLink.classList.add("date-anchor");
-                dateLink.innerText = log.date;
-                dateContainer.appendChild(dateLink);
+        let troubleshooting = [];
+        document.querySelectorAll("#troubleTable tr[data-row]").forEach(row => {
+            troubleshooting.push({
+                factor: row.cells[0].innerText,
+                level: row.cells[1].innerText,
+                explanation: row.cells[2].innerText,
+                strategy: row.cells[3].innerText
             });
+        });
 
-        } catch (error) {
-            console.error("Error loading logs:", error);
-        }
+        let logEntry = document.createElement("div");
+        logEntry.classList.add("entry");
+        logEntry.innerHTML = `
+            <h3>${date}</h3>
+            <p><span class="bold">Objective:</span> ${objective}</p>
+            <p><span class="bold">Protocol:</span><br>${protocol.replace(/\n/g, "<br>")}</p>
+            ${imageLink ? `<p><span class="bold">Observation:</span> <a href="${imageLink}" target="_blank">View Image</a></p>` : ""}
+            <p><span class="bold">Inference:</span> ${inference}</p>
+            <p><span class="bold">Most Likely Problem:</span> ${mostLikelyProblem}</p>
+            <p><span class="bold">Fixes to Add in Next Protocol:</span> ${nextFixes}</p>
+            ${troubleshooting.length > 0 ? `<p><span class="bold">Troubleshooting:</span></p>
+            <table>
+                <tr>
+                    <th>Risk Factor</th>
+                    <th>Risk Level</th>
+                    <th>Explanation</th>
+                    <th>Mitigation Strategy</th>
+                </tr>
+                ${troubleshooting.map(tr => `<tr><td>${tr.factor}</td><td>${tr.level}</td><td>${tr.explanation}</td><td>${tr.strategy}</td></tr>`).join('')}
+            </table>` : ""}
+        `;
+
+        document.getElementById("logEntries").prepend(logEntry);
+        document.getElementById("logForm").reset();
+        document.querySelectorAll("#troubleTable tr[data-row]").forEach(row => row.remove());
+    });
+
+    function addTroubleRow() {
+        let table = document.getElementById("troubleTable");
+        let row = table.insertRow();
+        row.setAttribute("data-row", "true");
+        row.innerHTML = `
+            <td contenteditable="true"></td>
+            <td contenteditable="true">
+                <select>
+                    <option>Low</option>
+                    <option>Moderate</option>
+                    <option>High</option>
+                </select>
+            </td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td><button onclick="removeRow(this)">X</button></td>
+        `;
     }
 
-    window.onload = loadLogs;
+    function removeRow(button) {
+        button.parentElement.parentElement.remove();
+    }
 </script>
 
 </body>
