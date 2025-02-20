@@ -3,164 +3,176 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lipo Protein A LFA Development Daily Log</title>
+    <title>LFA Daily Log</title>
     <style>
-        body { font-family: Arial, sans-serif; display: flex; margin: 0; padding: 0; }
-        h1 { text-align: center; color: #333; }
-
-        /* Sidebar Styling */
-        .sidebar { width: 20%; background: #2C3E50; padding: 15px; height: 100vh; color: white; overflow-y: auto; }
-        .sidebar h2 { text-align: center; margin-bottom: 10px; }
-        .date { padding: 5px; cursor: pointer; display: block; color: white; text-decoration: none; }
-        .date:hover { background: #1ABC9C; }
-
-        /* Main Content */
-        .container { width: 60%; padding: 20px; }
-        .log-entry { border: 1px solid #ccc; padding: 15px; margin: 15px 0; background: #f9f9f9; }
-        .bold { font-weight: bold; margin-top: 10px; }
-        .collapsible { cursor: pointer; padding: 10px; border: none; background: #27AE60; color: white; margin-top: 10px; text-align: left; width: 100%; }
-        .content { display: none; padding: 15px; border: 1px solid #ccc; margin-top: 5px; }
-
-        /* Troubleshooting Table */
+        body { font-family: Arial, sans-serif; margin: 20px; padding: 20px; }
+        h1 { text-align: center; }
+        .container { max-width: 800px; margin: auto; }
+        .top-right { text-align: right; }
+        button { padding: 10px 15px; cursor: pointer; }
+        .entry { border: 1px solid #ccc; padding: 15px; margin: 15px 0; background: #f9f9f9; }
         table { width: 100%; border-collapse: collapse; margin-top: 10px; }
         th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
         th { background: #f2f2f2; }
-
-        /* Risk Level Colors */
-        .low { background: #2ECC71; color: white; }
-        .moderate { background: #F1C40F; color: black; }
-        .high { background: #E74C3C; color: white; }
-
-        /* Right Sidebar */
-        .right-sidebar { width: 20%; background: #ECF0F1; padding: 15px; height: 100vh; overflow-y: auto; text-align: center; }
-        .right-sidebar button { width: 100%; padding: 10px; margin-top: 10px; background: #27AE60; color: white; border: none; cursor: pointer; font-size: 16px; }
-
-        /* Log Form */
-        .log-form-container { display: none; padding: 20px; border: 1px solid #ccc; background: #f9f9f9; margin-top: 10px; }
-        .log-form-container label { font-weight: bold; margin-top: 10px; display: block; }
-        .log-form-container textarea, .log-form-container input { width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px; }
-        .log-form-container button { background: #27AE60; color: white; padding: 10px; border: none; cursor: pointer; font-size: 16px; width: 100%; }
-
+        .risk-low { background-color: lightgreen; }
+        .risk-moderate { background-color: yellow; }
+        .risk-high { background-color: red; color: white; }
     </style>
 </head>
 <body>
 
-    <!-- Left Sidebar -->
-    <div class="sidebar">
-        <h2>LFA Log</h2>
-        <div id="dateList"></div>
+<div class="container">
+    <h1>LFA Daily Log</h1>
+    <div class="top-right">
+        <button onclick="showForm()">Add Today's Log</button>
     </div>
 
-    <!-- Main Content -->
-    <div class="container">
-        <h1>Lipo Protein A LFA Development Daily Log</h1>
+    <div id="logFormContainer" style="display:none;">
+        <h2>Add Log Entry</h2>
+        <form id="logForm">
+            <label>Date:</label>
+            <input type="date" id="date" required>
 
-        <div id="logFormContainer" class="log-form-container">
-            <form id="logForm">
-                <label>Date:</label>
-                <input type="date" id="date" required>
+            <label>Objective:</label>
+            <textarea id="objective" rows="3" required></textarea>
 
-                <label>Objective:</label>
-                <textarea id="objective" rows="3" required></textarea>
+            <label>Protocol:</label>
+            <textarea id="protocol" rows="6" required></textarea>
 
-                <label>Protocol:</label>
-                <textarea id="protocol" rows="6" placeholder="Sample Pad Treatment:\n- Buffer: PBS\n- Surfactant: Tween-20" required></textarea>
+            <label>Observation:</label>
+            <textarea id="observation" rows="3" required></textarea>
 
-                <label>Observation:</label>
-                <textarea id="observation" rows="3" required></textarea>
+            <label>Observation Image Link:</label>
+            <input type="text" id="imageLink" placeholder="Enter image URL">
 
-                <label>Observation Image (URL):</label>
-                <input type="text" id="imageLink" placeholder="Enter image URL">
+            <label>Inference:</label>
+            <textarea id="inference" rows="3" required></textarea>
 
-                <label>Inference:</label>
-                <textarea id="inference" rows="3" required></textarea>
+            <label>Troubleshooting:</label>
+            <table id="troubleTable">
+                <tr>
+                    <th>Risk Factor</th>
+                    <th>Risk Level</th>
+                    <th>Explanation</th>
+                    <th>Mitigation Strategy</th>
+                    <th>Remove</th>
+                </tr>
+            </table>
+            <button type="button" onclick="addTroubleRow()">Add Troubleshooting</button>
 
-                <label>Most Likely Problem:</label>
-                <textarea id="mostLikelyProblem" rows="3" required></textarea>
+            <label>Most Likely Problem:</label>
+            <textarea id="mostLikelyProblem" rows="3" required></textarea>
 
-                <label>Fixes to Add in Next Protocol:</label>
-                <textarea id="nextFixes" rows="3" required></textarea>
+            <label>Fixes to Add in Next Protocol:</label>
+            <textarea id="nextFixes" rows="3" required></textarea>
 
-                <label>Troubleshooting (Table Format)</label>
-                <table id="troubleshootingTable">
-                    <tr>
-                        <th>Risk Factor</th>
-                        <th>Risk Level</th>
-                        <th>Explanation</th>
-                        <th>Mitigation Strategy</th>
-                    </tr>
-                    <tr>
-                        <td><input type="text" id="riskFactor" placeholder="Enter Risk Factor"></td>
-                        <td>
-                            <select id="riskLevel">
-                                <option value="low" class="low">Low</option>
-                                <option value="moderate" class="moderate">Moderate</option>
-                                <option value="high" class="high">High</option>
-                            </select>
-                        </td>
-                        <td><input type="text" id="explanation" placeholder="Enter Explanation"></td>
-                        <td><input type="text" id="mitigationStrategy" placeholder="Enter Mitigation Strategy"></td>
-                    </tr>
-                </table>
-                <button type="button" onclick="addTroubleshootingRow()">Add More</button>
-
-                <button type="submit">Submit Log</button>
-            </form>
-        </div>
-
-        <div id="latestLog"></div>
-
-        <h2>Previous Logs</h2>
-        <div id="previousLogs"></div>
+            <button type="submit">Submit Log</button>
+            <button type="button" onclick="hideForm()">Cancel</button>
+        </form>
     </div>
 
-    <!-- Right Sidebar -->
-    <div class="right-sidebar">
-        <button onclick="showLogForm()">Submit Today's Log</button>
-        <button onclick="addRemark()">Add Remark</button>
-    </div>
+    <h2>Log Entries</h2>
+    <div id="logEntries"></div>
+</div>
 
-    <script>
-        let logs = [];
+<script>
+    function showForm() {
+        document.getElementById("logFormContainer").style.display = "block";
+    }
 
-        function showLogForm() {
-            document.getElementById("logFormContainer").style.display = "block";
-        }
+    function hideForm() {
+        document.getElementById("logFormContainer").style.display = "none";
+    }
 
-        function addTroubleshootingRow() {
-            let table = document.getElementById("troubleshootingTable");
-            let row = table.insertRow(-1);
+    document.getElementById("logForm").addEventListener("submit", function(event) {
+        event.preventDefault();
 
-            row.innerHTML = `
-                <td><input type="text" placeholder="Enter Risk Factor"></td>
-                <td>
-                    <select>
-                        <option value="low" class="low">Low</option>
-                        <option value="moderate" class="moderate">Moderate</option>
-                        <option value="high" class="high">High</option>
-                    </select>
-                </td>
-                <td><input type="text" placeholder="Enter Explanation"></td>
-                <td><input type="text" placeholder="Enter Mitigation Strategy"></td>
-            `;
-        }
+        let entry = {
+            date: document.getElementById("date").value,
+            objective: document.getElementById("objective").value,
+            protocol: document.getElementById("protocol").value,
+            observation: document.getElementById("observation").value,
+            imageLink: document.getElementById("imageLink").value,
+            inference: document.getElementById("inference").value,
+            mostLikelyProblem: document.getElementById("mostLikelyProblem").value,
+            nextFixes: document.getElementById("nextFixes").value,
+            troubleshooting: []
+        };
 
-        document.getElementById("logForm").addEventListener("submit", function(event) {
-            event.preventDefault();
-
-            let logEntry = { date: document.getElementById("date").value };
-            logs.unshift(logEntry);
-            updateLogs();
-            document.getElementById("logForm").reset();
-            document.getElementById("logFormContainer").style.display = "none";
+        document.querySelectorAll("#troubleTable tr[data-row]").forEach(row => {
+            entry.troubleshooting.push({
+                factor: row.cells[0].innerText,
+                level: row.cells[1].querySelector("select").value,
+                explanation: row.cells[2].innerText,
+                strategy: row.cells[3].innerText
+            });
         });
 
-        function updateLogs() {
-            let latestLog = logs.length > 0 ? logs[0] : "<p>No logs yet.</p>";
-            document.getElementById("latestLog").innerHTML = latestLog;
-        }
+        fetch('/save-log', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(entry)
+        }).then(response => response.json()).then(() => {
+            hideForm();
+            loadLogs();
+        });
+    });
 
-    </script>
+    function addTroubleRow() {
+        let table = document.getElementById("troubleTable");
+        let row = table.insertRow();
+        row.setAttribute("data-row", "true");
+        row.innerHTML = `
+            <td contenteditable="true"></td>
+            <td>
+                <select onchange="updateRiskColor(this)">
+                    <option value="low">Low</option>
+                    <option value="moderate">Moderate</option>
+                    <option value="high">High</option>
+                </select>
+            </td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td><button onclick="removeRow(this)">X</button></td>
+        `;
+    }
+
+    function updateRiskColor(select) {
+        let row = select.parentElement.parentElement;
+        row.className = select.value === "low" ? "risk-low" :
+                        select.value === "moderate" ? "risk-moderate" : "risk-high";
+    }
+
+    function removeRow(button) {
+        button.parentElement.parentElement.remove();
+    }
+
+    function loadLogs() {
+        fetch('/get-logs')
+            .then(response => response.json())
+            .then(data => {
+                let logContainer = document.getElementById("logEntries");
+                logContainer.innerHTML = "";
+                data.reverse().forEach(log => {
+                    let logEntry = document.createElement("div");
+                    logEntry.classList.add("entry");
+                    logEntry.innerHTML = `
+                        <h3>${log.date}</h3>
+                        <p><strong>Objective:</strong> ${log.objective}</p>
+                        <p><strong>Protocol:</strong><br>${log.protocol.replace(/\n/g, "<br>")}</p>
+                        <p><strong>Observation:</strong> ${log.observation}</p>
+                        ${log.imageLink ? `<p><strong>Observation Image:</strong> <a href="${log.imageLink}" target="_blank">View Image</a></p>` : ""}
+                        <p><strong>Inference:</strong> ${log.inference}</p>
+                        <p><strong>Most Likely Problem:</strong> ${log.mostLikelyProblem}</p>
+                        <p><strong>Fixes to Add in Next Protocol:</strong> ${log.nextFixes}</p>
+                    `;
+                    logContainer.appendChild(logEntry);
+                });
+            });
+    }
+
+    loadLogs();
+</script>
 
 </body>
 </html>
