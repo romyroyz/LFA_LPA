@@ -11,18 +11,16 @@
         /* Sidebar Styling */
         .sidebar { width: 20%; background: #2C3E50; padding: 15px; height: 100vh; color: white; overflow-y: auto; }
         .sidebar h2 { text-align: center; margin-bottom: 10px; }
-        .month { font-weight: bold; margin-top: 10px; font-size: 16px; }
         .date { padding: 5px; cursor: pointer; display: block; color: white; text-decoration: none; }
         .date:hover { background: #1ABC9C; }
         .active-month { background: #1ABC9C; padding: 5px; }
 
         /* Main Content */
         .container { width: 60%; padding: 20px; }
-        label { font-weight: bold; display: block; margin-top: 10px; }
-        textarea, input, select { width: 100%; padding: 8px; margin-top: 5px; }
-        button { padding: 10px 15px; margin-top: 10px; cursor: pointer; background: #3498DB; color: white; border: none; }
-        .entry { border: 1px solid #ccc; padding: 15px; margin: 15px 0; background: #f9f9f9; }
+        .log-entry { border: 1px solid #ccc; padding: 15px; margin: 15px 0; background: #f9f9f9; }
         .bold { font-weight: bold; margin-top: 10px; }
+        .collapsible { cursor: pointer; padding: 10px; border: none; background: #3498DB; color: white; margin-top: 10px; text-align: left; width: 100%; }
+        .content { display: none; padding: 15px; border: 1px solid #ccc; margin-top: 5px; }
 
         /* Troubleshooting Table */
         table { width: 100%; border-collapse: collapse; margin-top: 10px; }
@@ -35,10 +33,8 @@
         .high { background: #E74C3C; color: white; }
 
         /* Right Sidebar */
-        .right-sidebar { width: 20%; background: #ECF0F1; padding: 15px; height: 100vh; overflow-y: auto; }
-        .log-list { margin-bottom: 10px; cursor: pointer; padding: 5px; border-bottom: 1px solid #BDC3C7; }
-        .log-list:hover { background: #BDC3C7; }
-        .collapse { display: none; }
+        .right-sidebar { width: 20%; background: #ECF0F1; padding: 15px; height: 100vh; overflow-y: auto; text-align: center; }
+        .right-sidebar button { width: 100%; padding: 10px; margin-top: 10px; background: #E74C3C; color: white; border: none; cursor: pointer; }
 
     </style>
 </head>
@@ -48,17 +44,27 @@
     <div class="sidebar">
         <h2>LFA Log</h2>
         <div class="active-month">February 2025</div>
-        <a class="date" href="#">1 Feb</a>
-        <a class="date" href="#">2 Feb</a>
-        <div class="month">January 2025</div>
-        <a class="date" href="#">1 Jan</a>
-        <a class="date" href="#">2 Jan</a>
+        <div id="dateList"></div>
     </div>
 
     <!-- Main Content -->
     <div class="container">
         <h1>Lipo Protein A LFA Development Daily Log</h1>
 
+        <div id="latestLog"></div>
+
+        <h2>Previous Logs</h2>
+        <div id="previousLogs"></div>
+    </div>
+
+    <!-- Right Sidebar -->
+    <div class="right-sidebar">
+        <button onclick="showLogForm()">Submit Today's Log</button>
+        <button onclick="addRemark()">Add Remark</button>
+    </div>
+
+    <!-- Log Form (Hidden Initially) -->
+    <div id="logFormContainer" style="display: none; padding: 20px;">
         <form id="logForm">
             <label>Date:</label>
             <input type="date" id="date" required>
@@ -78,18 +84,6 @@
             <label>Inference:</label>
             <textarea id="inference" rows="3" required></textarea>
 
-            <label>Troubleshooting:</label>
-            <table id="troubleTable">
-                <tr>
-                    <th>Risk Factor</th>
-                    <th>Risk Level</th>
-                    <th>Explanation</th>
-                    <th>Mitigation Strategy</th>
-                    <th>Remove</th>
-                </tr>
-            </table>
-            <button type="button" onclick="addTroubleRow()">Add Troubleshooting</button>
-
             <label>Most Likely Problem:</label>
             <textarea id="mostLikelyProblem" rows="3" required></textarea>
 
@@ -98,53 +92,74 @@
 
             <button type="submit">Submit Log</button>
         </form>
-
-        <h2>Log Entries</h2>
-        <div id="logEntries"></div>
-    </div>
-
-    <!-- Right Sidebar -->
-    <div class="right-sidebar">
-        <h3>Latest Log</h3>
-        <div class="log-list">February 18, 2025</div>
-        <h3>Previous Logs</h3>
-        <div class="log-list" onclick="toggleCollapse(this)">February 17, 2025</div>
-        <div class="collapse">Details of Feb 17 log...</div>
     </div>
 
     <script>
-        function addTroubleRow() {
-            let table = document.getElementById("troubleTable");
-            let row = table.insertRow();
-            row.setAttribute("data-row", "true");
-            row.innerHTML = `
-                <td contenteditable="true"></td>
-                <td>
-                    <select onchange="colorCodeRisk(this)">
-                        <option value="low">Low</option>
-                        <option value="moderate">Moderate</option>
-                        <option value="high">High</option>
-                    </select>
-                </td>
-                <td contenteditable="true"></td>
-                <td contenteditable="true"></td>
-                <td><button onclick="removeRow(this)">X</button></td>
+        let logs = [];
+
+        function showLogForm() {
+            document.getElementById("logFormContainer").style.display = "block";
+        }
+
+        document.getElementById("logForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            let logEntry = {
+                date: document.getElementById("date").value,
+                objective: document.getElementById("objective").value,
+                protocol: document.getElementById("protocol").value.replace(/\n/g, "<br>"),
+                observation: document.getElementById("observation").value,
+                imageLink: document.getElementById("imageLink").value,
+                inference: document.getElementById("inference").value,
+                mostLikelyProblem: document.getElementById("mostLikelyProblem").value,
+                nextFixes: document.getElementById("nextFixes").value
+            };
+
+            logs.unshift(logEntry);
+            updateLogs();
+            document.getElementById("logForm").reset();
+            document.getElementById("logFormContainer").style.display = "none";
+        });
+
+        function updateLogs() {
+            let latestLog = logs.length > 0 ? logs[0] : null;
+            let previousLogs = logs.slice(1);
+
+            document.getElementById("latestLog").innerHTML = latestLog ? generateLogHTML(latestLog) : "<p>No logs yet.</p>";
+
+            let previousLogsHTML = "";
+            previousLogs.forEach((log, index) => {
+                previousLogsHTML += `
+                    <button class="collapsible" onclick="toggleCollapse(this)">${log.date}</button>
+                    <div class="content">${generateLogHTML(log)}</div>
+                `;
+            });
+            document.getElementById("previousLogs").innerHTML = previousLogsHTML;
+
+            let dateListHTML = logs.map(log => `<a class="date">${log.date}</a>`).join("");
+            document.getElementById("dateList").innerHTML = dateListHTML;
+        }
+
+        function generateLogHTML(log) {
+            return `
+                <div class="log-entry">
+                    <h3>${log.date}</h3>
+                    <p><b>Objective:</b> ${log.objective}</p>
+                    <p><b>Protocol:</b> ${log.protocol}</p>
+                    <p><b>Observation:</b> ${log.observation}</p>
+                    <p><b>Inference:</b> ${log.inference}</p>
+                    <p><b>Most Likely Problem:</b> ${log.mostLikelyProblem}</p>
+                    <p><b>Fixes to Add in Next Protocol:</b> ${log.nextFixes}</p>
+                    ${log.imageLink ? `<img src="${log.imageLink}" width="200">` : ""}
+                </div>
             `;
         }
 
-        function removeRow(button) {
-            button.parentElement.parentElement.remove();
+        function toggleCollapse(button) {
+            let content = button.nextElementSibling;
+            content.style.display = content.style.display === "block" ? "none" : "block";
         }
 
-        function colorCodeRisk(select) {
-            let row = select.parentElement.parentElement;
-            row.className = select.value;
-        }
-
-        function toggleCollapse(element) {
-            let next = element.nextElementSibling;
-            next.style.display = (next.style.display === "block") ? "none" : "block";
-        }
     </script>
 
 </body>
