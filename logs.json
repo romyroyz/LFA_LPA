@@ -1,27 +1,115 @@
 [
     {
-        "date": "January 25, 2025",
-        "protocol": "Prepared test strips with new antibody concentration...",
-        "observation": "Test line appeared faint, control line was missing...",
-        "image": "https://example.com/image1.jpg",
-        "troubleshooting": [
-            {"Risk Factor": "Vortexing", "Risk Level": "Low", "Possible Reason": "Protein degradation", "Mitigation": "Vortex at low speed"},
-            {"Risk Factor": "Sample Pad", "Risk Level": "High", "Possible Reason": "Too thick", "Mitigation": "Reduce casein concentration to 0.5%"}
+        "date": "February 18, 2025",
+        "protocol": "To optimize the Lateral Flow Assay (LFA) for detecting Lipoprotein(a) (Lp(a)) while ensuring proper antibody binding and flow conditions.",
+        "observation": [
+            "Premix sample showed no reaction.",
+            "Post sample application showed faint lines on test line, no line in control.",
+            "Pre-wetting showed faint lines on test line, no line in control."
         ],
-        "major_problem": "Weak test line, no control line",
-        "assumption": "Secondary antibody concentration is too low",
-        "next_protocol_fixes": "Increase secondary antibody concentration"
+        "image": "Link for the observation image",
+        "troubleshooting": [
+            {
+                "Risk Factor": "Vortexing",
+                "Risk Level": "Low",
+                "Possible Reason": "Possible protein degradation via shear stress.",
+                "Mitigation Strategy": "Use low-speed vortexing for a short duration to prevent denaturation."
+            },
+            {
+                "Risk Factor": "Handling Error",
+                "Risk Level": "Moderate",
+                "Possible Reason": "Potential errors in sample application or reagent handling.",
+                "Mitigation Strategy": "Standardize pipetting techniques and train personnel on precise handling procedures."
+            },
+            {
+                "Risk Factor": "Additional Buffer Application",
+                "Risk Level": "High",
+                "Possible Reason": "Excess buffer might have hindered the running of the sample through the strip.",
+                "Mitigation Strategy": "Optimize buffer volume and timing of application to ensure proper migration."
+            },
+            {
+                "Risk Factor": "Strip Assembly",
+                "Risk Level": "High",
+                "Possible Reason": "Sample pad too thick, not absorbing Lp(a) efficiently.",
+                "Mitigation Strategy": "Reduce Casein concentration to 0.5% and Tween-20 concentration to 0.2% to improve absorption."
+            },
+            {
+                "Risk Factor": "PBS Composition",
+                "Risk Level": "High",
+                "Possible Reason": "High viscosity affecting flow rate and protein migration.",
+                "Mitigation Strategy": "Add Tween-20 (0.1%) to lower viscosity and improve fluid dynamics."
+            },
+            {
+                "Risk Factor": "Drying Temperature",
+                "Risk Level": "Moderate",
+                "Possible Reason": "Non-uniform drying affecting reagent distribution.",
+                "Mitigation Strategy": "Modify drying conditions: 1-hour RT drying followed by 37°C for 30 minutes to ensure uniform drying."
+            }
+        ],
+        "major_problem": "No test line appeared in premix sample. Faint test lines appeared in pre-wetting and post sample application.",
+        "assumption": "Pre-wetting and post sample application could be effective strategies or only the buffer moved to the test line.",
+        "next_protocol_fixes": "Spot unlabeled secondary antibody on the control line instead of labeled secondary antibody."
     },
     {
-        "date": "January 26, 2025",
-        "protocol": "Adjusted buffer pH to improve antibody interaction...",
-        "observation": "Flow rate improved, but test line still weak...",
-        "image": "https://example.com/image2.jpg",
-        "troubleshooting": [
-            {"Risk Factor": "Buffer pH", "Risk Level": "Moderate", "Possible Reason": "Too acidic", "Mitigation": "Adjust to pH 7.4"}
+        "date": "February 19, 2025",
+        "protocol": "Adjusting sample pad treatment, conjugate pad, and buffer optimization.",
+        "observation": [
+            "Premix sample showed no reaction.",
+            "Post-sample application showed faint lines of test line, no line in control.",
+            "Pre-wetting showed faint lines on test lines, no line in control."
         ],
-        "major_problem": "Background noise in results",
-        "assumption": "Buffer needs further optimization",
-        "next_protocol_fixes": "Try a different blocking agent"
+        "image": "Link for the observation image",
+        "troubleshooting": [
+            {
+                "Possible Cause": "Control Line Antibody Not Binding",
+                "Explanation": "If the Goat Anti-Mouse IgG (Control Line Antibody) was not properly immobilized or dried, the secondary antibody won't bind.",
+                "Suggested Fix": "Ensure the control line antibody is applied correctly and dried properly before testing. Increase antibody amount if needed."
+            },
+            {
+                "Possible Cause": "Gold-Conjugated Secondary Antibody Not Reaching the Control Line",
+                "Explanation": "If too little secondary antibody is present, it may all bind at the test line, leaving none to reach the control line.",
+                "Suggested Fix": "Increase secondary antibody concentration (reduce dilution from 1:80 to 1:50)."
+            },
+            {
+                "Possible Cause": "Excess Sample or Buffer Preventing Flow",
+                "Explanation": "If too much sample or buffer was applied, the capillary action may be disrupted, preventing proper migration to the control line.",
+                "Suggested Fix": "Reduce sample volume (try 2-4 µL instead of 6 µL) and ensure running buffer is evenly applied."
+            },
+            {
+                "Possible Cause": "Improper Flow Rate (Viscosity Issues)",
+                "Explanation": "High viscosity or buffer imbalance could prevent full migration.",
+                "Suggested Fix": "Adjust Tween-20 concentration in buffer (try 0.05% instead of 0.1%)."
+            },
+            {
+                "Possible Cause": "Membrane Issues (Blocked or Non-Absorbent Control Line)",
+                "Explanation": "The membrane at the control line may be damaged or not absorbing properly.",
+                "Suggested Fix": "Use a new strip, check the manufacturing process, and confirm proper reagent drying."
+            },
+            {
+                "Possible Cause": "Gold Nanoparticles Aggregating",
+                "Explanation": "If the gold nanoparticles are clumping, they may bind at the test line but fail to move further.",
+                "Suggested Fix": "Vortex gently before use and store gold-conjugates at 4°C."
+            },
+            {
+                "Possible Cause": "Labeled Secondary Antibody in Control Line",
+                "Explanation": "The control line should be spotted with unlabeled secondary antibodies, but in our protocol, we spotted with labeled secondary antibody.",
+                "Suggested Fix": "Spot unlabeled secondary antibody on the control line."
+            }
+        ],
+        "major_problem": "Faint test lines but no control line observed.",
+        "assumption": "Possible buffer migration issue or incorrect control line antibody application.",
+        "next_protocol_fixes": "Try different buffer conditions and increase secondary antibody concentration."
+    },
+    {
+        "date": "February 20, 2025",
+        "protocol": "We are not planning to do an experiment today. We are trying to plan an alternative strategy.",
+        "observation": [
+            "No experiment performed today. Planning next steps."
+        ],
+        "image": "",
+        "troubleshooting": [],
+        "major_problem": "Need to revise experimental setup for better control line visibility.",
+        "assumption": "Potential buffer imbalance or antibody concentration issues.",
+        "next_protocol_fixes": "New protocol to be developed by EOD today."
     }
 ]
