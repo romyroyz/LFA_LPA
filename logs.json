@@ -1,7 +1,7 @@
 [
     {
         "date": "February 18, 2025",
-        "protocol": "To optimize the Lateral Flow Assay (LFA) for detecting Lipoprotein(a) (Lp(a)) while ensuring proper antibody binding and flow conditions.",
+        "objective": "To optimize the Lateral Flow Assay (LFA) for detecting Lipoprotein(a) (Lp(a)) while ensuring proper antibody binding and flow conditions.",
         "sample_pad_treatment": {
             "buffer": "Phosphate-Buffered Saline (PBS)",
             "surfactant": "Tween-20 (for flow improvement)",
@@ -106,46 +106,232 @@
     },
     {
         "date": "February 19, 2025",
-        "protocol": "Adjusting sample pad treatment, conjugate pad, and buffer optimization.",
-        "observation": [
-            "Premix sample showed no reaction.",
-            "Post-sample application showed faint lines of test line, no line in control.",
-            "Pre-wetting showed faint lines on test lines, no line in control."
-        ],
-        "image": "Link for the observation image",
-        "troubleshooting": {
-            "possible_causes": [
-                {
-                    "cause": "Control Line Antibody Not Binding",
-                    "explanation": "If the Goat Anti-Mouse IgG (Control Line Antibody) was not properly immobilized or dried, the secondary antibody won't bind.",
-                    "suggested_fix": "Ensure the control line antibody is applied correctly and dried properly before testing. Increase antibody amount if needed."
+        "protocol": {
+            "sample_pad_treatment": {
+                "purpose": "Prepares the sample pad to allow smooth flow of the sample, reduces non-specific binding, and ensures even migration of the sample across the strip.",
+                "materials_required": [
+                    "PBS Buffer (1X, pH 7.4)",
+                    "Tween-20 (0.5%)",
+                    "Casein (0.5%)",
+                    "Pipettes and tips",
+                    "Incubator or drying chamber"
+                ],
+                "step_by_step_procedure": [
+                    {
+                        "step": "Prepare the Pre-Coating Solution",
+                        "details": [
+                            "PBS (1X, pH 7.4) → 850 µL",
+                            "Tween-20 (0.5%) → 5 µL",
+                            "Casein (0.5%) → 50 µL (from 10% stock solution)"
+                        ]
+                    },
+                    {
+                        "step": "Apply the Solution to the Sample Pad",
+                        "details": "Using a pipette, apply 50 µL of the prepared solution onto the sample pad."
+                    },
+                    {
+                        "step": "Dry the Sample Pad",
+                        "details": [
+                            "Let the strip air dry at room temperature for 1 hour.",
+                            "Transfer to an incubator at 37°C for 30 minutes to complete drying."
+                        ]
+                    },
+                    {
+                        "step": "Store in a dry container until use."
+                    }
+                ]
+            },
+            "conjugate_pad_preparation": {
+                "purpose": "Load the gold-conjugated secondary antibody onto the conjugate pad to ensure proper detection of the analyte when the test runs.",
+                "materials_required": [
+                    "Gold-conjugated secondary antibody (Goat Anti-Mouse IgG, 20 nm)",
+                    "Pipettes and tips",
+                    "Incubator or drying chamber"
+                ],
+                "step_by_step_procedure": [
+                    {
+                        "step": "Apply the Secondary Antibody",
+                        "details": "Pipette the gold-conjugated secondary antibody onto the conjugate pad."
+                    },
+                    {
+                        "step": "Dry the Conjugate Pad",
+                        "details": "Let it air dry at room temperature for 1 hour."
+                    },
+                    {
+                        "step": "Store in a dry, sealed container until use."
+                    }
+                ]
+            },
+            "test_line_preparation": {
+                "purpose": "Immobilize the primary antibody to capture Lp(a).",
+                "materials_required": [
+                    "Lp(a) Monoclonal Antibody (8F6A9, 8H5C5)",
+                    "Pipettes and tips"
+                ],
+                "step_by_step_procedure": [
+                    {
+                        "step": "Apply the Primary Antibody",
+                        "details": "Pipette 1–2 µL of Lp(a) monoclonal antibody per strip onto the test line region."
+                    },
+                    {
+                        "step": "Dry the Strip",
+                        "details": "Let it air dry at room temperature for 1 hour."
+                    },
+                    {
+                        "step": "Store in a dry, sealed environment until use."
+                    }
+                ]
+            },
+            "control_line_preparation": {
+                "purpose": "Ensures the test is valid by capturing unbound secondary antibodies.",
+                "materials_required": [
+                    "Goat Anti-Mouse IgG (Control Line Antibody)",
+                    "Pipettes and tips"
+                ],
+                "step_by_step_procedure": [
+                    {
+                        "step": "Apply the Control Line Antibody",
+                        "details": "Pipette 1–2 µL of Goat Anti-Mouse IgG onto the control line region."
+                    },
+                    {
+                        "step": "Dry the Strip",
+                        "details": "Let it air dry at room temperature for 1 hour."
+                    },
+                    {
+                        "step": "Store in a dry, sealed environment until use."
+                    }
+                ]
+            },
+            "running_buffer_preparation": {
+                "purpose": "Ensures smooth sample migration and prevents aggregation. Helps wash away unbound proteins.",
+                "materials_required": [
+                    "PBS (1X, pH 7.4)",
+                    "Tween-20 (0.1%)",
+                    "Casein (1%)",
+                    "Pipettes and tips"
+                ],
+                "step_by_step_procedure": [
+                    {
+                        "step": "Prepare the Running Buffer Solution (Final Volume: 1 mL)",
+                        "details": [
+                            "PBS (1X, pH 7.4) → 880 µL",
+                            "Tween-20 (0.1%) → 1 µL",
+                            "Casein (1%) → 100 µL (from 10% stock solution)"
+                        ]
+                    },
+                    {
+                        "step": "Mix the Buffer Well",
+                        "details": "Vortex gently or pipette up and down to mix."
+                    },
+                    {
+                        "step": "Store the Buffer",
+                        "details": "Keep at 4°C until use. Use fresh within 24 hours."
+                    }
+                ]
+            },
+            "sample_reagent_preparation": {
+                "primary_antibody_dilution": {
+                    "stock_concentration": "1 mg/mL",
+                    "dilution": "2 µL of stock + 98 µL of PBS",
+                    "final_concentration": "0.02 mg/mL"
                 },
-                {
-                    "cause": "Gold-Conjugated Secondary Antibody Not Reaching the Control Line",
-                    "explanation": "If too little secondary antibody is present, it may all bind at the test line, leaving none to reach the control line.",
-                    "suggested_fix": "Increase secondary antibody concentration (reduce dilution from 1:80 to 1:50)."
+                "secondary_antibody_dilution": {
+                    "stock_volume": "1.25 µL",
+                    "buffer_volume": "98.75 µL",
+                    "final_volume": "100 µL"
                 },
-                {
-                    "cause": "Excess Sample or Buffer Preventing Flow",
-                    "explanation": "If too much sample or buffer was applied, the capillary action may be disrupted, preventing proper migration to the control line.",
-                    "suggested_fix": "Reduce sample volume (try 2-4 µL instead of 6 µL) and ensure running buffer is evenly applied."
+                "lp_a_standard_dilution": {
+                    "stock_volume": "1 µL",
+                    "buffer_volume": "99 µL",
+                    "final_volume": "100 µL"
                 }
-            ]
-        },
-        "major_problem": "Faint test lines but no control line observed.",
-        "assumption": "Possible buffer migration issue or incorrect control line antibody application.",
-        "next_protocol_fixes": "Try different buffer conditions and increase secondary antibody concentration."
+            },
+            "running_lfa_test": {
+                "step_1": {
+                    "title": "Sample Application",
+                    "details": "We will apply the sample in 3 different ways to compare results.",
+                    "methods": [
+                        {
+                            "method": "Premixed Sample Application (Direct Premix)",
+                            "steps": [
+                                "Mix: 2 µL of sample + 4 µL of running buffer.",
+                                "Apply: Pipette 6 µL of the mixture onto the sample pad."
+                            ]
+                        },
+                        {
+                            "method": "Post-Sample Buffer Application",
+                            "steps": [
+                                "Apply: Pipette 2 µL of sample onto the sample pad.",
+                                "Wait 30–60 seconds for the sample to begin migration.",
+                                "Apply: Add 20 µL of running buffer to improve migration."
+                            ]
+                        },
+                        {
+                            "method": "Pre-Wetting the Sample Pad",
+                            "steps": [
+                                "Apply: Pipette 10 µL of running buffer onto the sample pad.",
+                                "Wait 30 seconds for absorption.",
+                                "Apply: Add 2 µL of sample."
+                            ]
+                        }
+                    ]
+                },
+                "step_2": {
+                    "title": "Incubation & Detection",
+                    "details": [
+                        "Allow the liquid to fully migrate across the strip (~5–15 minutes).",
+                        "Observe test and control lines under normal lighting conditions."
+                    ]
+                }
+            },
+            "observation": {
+                "premix_sample": "No reaction.",
+                "post_sample_application": "Faint lines of test line, no line in control.",
+                "pre_wetting": "Faint lines on test lines, no line in control.",
+                "image": "Link for the observation images"
+            },
+            "inference": "Since there is no line in pre-sample but lines in other two, either pre-wetting and post-sample application is an effective strategy or only the buffer moved to the test line.",
+            "troubleshooting": {
+                "possible_causes": [
+                    {
+                        "cause": "Control Line Antibody Not Binding",
+                        "explanation": "If the Goat Anti-Mouse IgG (Control Line Antibody) was not properly immobilized or dried, the secondary antibody won't bind to it.",
+                        "suggested_fix": "Ensure the control line antibody is applied correctly and dried properly before testing. Increase antibody amount if needed."
+                    },
+                    {
+                        "cause": "Gold-Conjugated Secondary Antibody Not Reaching the Control Line",
+                        "explanation": "If too little secondary antibody is present, it may all bind at the test line, leaving none to reach the control line.",
+                        "suggested_fix": "Increase secondary antibody concentration (e.g., reduce dilution from 1:80 to 1:50)."
+                    },
+                    {
+                        "cause": "Excess Sample or Buffer Preventing Flow",
+                        "explanation": "If too much sample or buffer was applied, the capillary action may be disrupted, preventing proper migration to the control line.",
+                        "suggested_fix": "Reduce sample volume (try 2-4 µL instead of 6 µL) and ensure running buffer is evenly applied."
+                    },
+                    {
+                        "cause": "Improper Flow Rate (Viscosity Issues)",
+                        "explanation": "High viscosity or buffer imbalance could prevent full migration.",
+                        "suggested_fix": "Adjust Tween-20 concentration in buffer (try 0.05% instead of 0.1%)."
+                    },
+                    {
+                        "cause": "Membrane Issues (Blocked or Non-Absorbent Control Line)",
+                        "explanation": "The membrane at the control line may be damaged or not absorbing properly.",
+                        "suggested_fix": "Use a new strip, check the manufacturing process, and confirm proper reagent drying."
+                    },
+                    {
+                        "cause": "Gold Nanoparticles Aggregating",
+                        "explanation": "If the gold nanoparticles are clumping, they may bind at the test line but fail to move further.",
+                        "suggested_fix": "Vortex gently before use and store gold-conjugates at 4°C."
+                    }
+                ],
+                "major_issue": "Control line was spotted with labeled secondary antibody instead of unlabeled secondary antibody.",
+                "suggested_fix": "Spot unlabeled secondary antibody on the control line."
+            }
+        }
     },
     {
         "date": "February 20, 2025",
-        "protocol": "We are not planning to do an experiment today. We are trying to plan an alternative strategy.",
-        "observation": [
-            "No experiment performed today. Planning next steps."
-        ],
-        "image": "",
-        "troubleshooting": [],
-        "major_problem": "Need to revise experimental setup for better control line visibility.",
-        "assumption": "Potential buffer imbalance or antibody concentration issues.",
-        "next_protocol_fixes": "New protocol to be developed by EOD today."
+        "plan": "No experiment planned for today. Focus on planning an alternative strategy.",
+        "goal": "Develop a new protocol by the end of the day."
     }
 ]
