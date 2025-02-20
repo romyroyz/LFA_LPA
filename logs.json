@@ -2,52 +2,106 @@
     {
         "date": "February 18, 2025",
         "protocol": "To optimize the Lateral Flow Assay (LFA) for detecting Lipoprotein(a) (Lp(a)) while ensuring proper antibody binding and flow conditions.",
-        "observation": [
-            "Premix sample showed no reaction.",
-            "Post sample application showed faint lines on test line, no line in control.",
-            "Pre-wetting showed faint lines on test line, no line in control."
-        ],
-        "image": "Link for the observation image",
-        "troubleshooting": [
-            {
-                "Risk Factor": "Vortexing",
-                "Risk Level": "Low",
-                "Possible Reason": "Possible protein degradation via shear stress.",
-                "Mitigation Strategy": "Use low-speed vortexing for a short duration to prevent denaturation."
+        "sample_pad_treatment": {
+            "buffer": "Phosphate-Buffered Saline (PBS)",
+            "surfactant": "Tween-20 (for flow improvement)",
+            "blocking_agent": "1% Casein (prevents non-specific binding)",
+            "total_volume_applied": "50 µL PBS + Tween-80 + 1% Casein",
+            "drying_conditions": "37°C for 30 minutes"
+        },
+        "conjugate_pad_preparation": {
+            "antibody_applied": "Gold-conjugated secondary antibody (Goat Anti-Mouse IgG, 20nm)",
+            "treatment": "Only the secondary antibody was loaded.",
+            "drying_conditions": "Left to dry before use."
+        },
+        "test_line_preparation": {
+            "antibody": "LPA Monoclonal Antibody (8F6A9, 8H5C5)",
+            "applied_volume": "1-2 µL per strip",
+            "drying_conditions": "Air-dried before use."
+        },
+        "control_line_preparation": {
+            "antibody": "Goat Anti-Mouse IgG (for capturing secondary antibody)",
+            "applied_volume": "1-2 µL per strip",
+            "drying_conditions": "Air-dried before use."
+        },
+        "sample_reagent_preparation": {
+            "primary_antibody_dilution": {
+                "stock_concentration": "1 mg/mL",
+                "dilution": "2 µL of stock + 98 µL of PBS",
+                "final_concentration": "0.02 mg/mL"
             },
-            {
-                "Risk Factor": "Handling Error",
-                "Risk Level": "Moderate",
-                "Possible Reason": "Potential errors in sample application or reagent handling.",
-                "Mitigation Strategy": "Standardize pipetting techniques and train personnel on precise handling procedures."
+            "secondary_antibody_dilution": {
+                "stock_volume": "1.25 µL",
+                "buffer_volume": "98.75 µL",
+                "final_volume": "100 µL"
             },
-            {
-                "Risk Factor": "Additional Buffer Application",
-                "Risk Level": "High",
-                "Possible Reason": "Excess buffer might have hindered the running of the sample through the strip.",
-                "Mitigation Strategy": "Optimize buffer volume and timing of application to ensure proper migration."
-            },
-            {
-                "Risk Factor": "Strip Assembly",
-                "Risk Level": "High",
-                "Possible Reason": "Sample pad too thick, not absorbing Lp(a) efficiently.",
-                "Mitigation Strategy": "Reduce Casein concentration to 0.5% and Tween-20 concentration to 0.2% to improve absorption."
-            },
-            {
-                "Risk Factor": "PBS Composition",
-                "Risk Level": "High",
-                "Possible Reason": "High viscosity affecting flow rate and protein migration.",
-                "Mitigation Strategy": "Add Tween-20 (0.1%) to lower viscosity and improve fluid dynamics."
-            },
-            {
-                "Risk Factor": "Drying Temperature",
-                "Risk Level": "Moderate",
-                "Possible Reason": "Non-uniform drying affecting reagent distribution.",
-                "Mitigation Strategy": "Modify drying conditions: 1-hour RT drying followed by 37°C for 30 minutes to ensure uniform drying."
+            "lp_a_standard_dilution": {
+                "stock_volume": "1 µL",
+                "buffer_volume": "99 µL",
+                "final_volume": "100 µL"
             }
-        ],
-        "major_problem": "No test line appeared in premix sample. Faint test lines appeared in pre-wetting and post sample application.",
-        "assumption": "Pre-wetting and post sample application could be effective strategies or only the buffer moved to the test line.",
+        },
+        "running_lfa_test": {
+            "sample_application": {
+                "volume_applied": "5 µL of diluted Lp(a) standard",
+                "applied_onto": "Sample Pad"
+            },
+            "additional_buffer_application": {
+                "volume_applied": "50 µL of PBS along with Tween-80 and casein",
+                "notes": "This was done despite the sample already being diluted in buffer."
+            },
+            "flow_initiation_observation": {
+                "test_duration": "10–15 minutes",
+                "observation": "Faint control line observed, no visible test line."
+            },
+            "image": "Link for the observation image"
+        },
+        "troubleshooting": {
+            "assumptions": [
+                "Lp(a) protein is intact and not degraded.",
+                "Our dilution is correct."
+            ],
+            "risk_factors": [
+                {
+                    "factor": "Vortexing",
+                    "risk_level": "Low",
+                    "possible_reason": "Possible protein degradation via shear stress.",
+                    "mitigation_strategy": "Use low-speed vortexing for a short duration to prevent denaturation."
+                },
+                {
+                    "factor": "Handling Error",
+                    "risk_level": "Moderate",
+                    "possible_reason": "Potential errors in sample application or reagent handling.",
+                    "mitigation_strategy": "Standardize pipetting techniques and train personnel on precise handling procedures."
+                },
+                {
+                    "factor": "Additional Buffer Application",
+                    "risk_level": "High",
+                    "possible_reason": "Excess buffer might have hindered the running of the sample through the strip.",
+                    "mitigation_strategy": "Optimize buffer volume and timing of application to ensure proper migration."
+                },
+                {
+                    "factor": "Strip Assembly",
+                    "risk_level": "High",
+                    "possible_reason": "Sample pad too thick, not absorbing Lp(a) efficiently.",
+                    "mitigation_strategy": "Reduce Casein concentration to 0.5% and Tween-20 concentration to 0.2% to improve absorption."
+                },
+                {
+                    "factor": "PBS Composition",
+                    "risk_level": "High",
+                    "possible_reason": "High viscosity affecting flow rate and protein migration.",
+                    "mitigation_strategy": "Add Tween-20 (0.1%) to lower viscosity and improve fluid dynamics."
+                },
+                {
+                    "factor": "Drying Temperature",
+                    "risk_level": "Moderate",
+                    "possible_reason": "Non-uniform drying affecting reagent distribution.",
+                    "mitigation_strategy": "Modify drying conditions: 1-hour RT drying followed by 37°C for 30 minutes to ensure uniform drying."
+                }
+            ]
+        },
+        "major_problem": "No test line appeared in premix sample. Faint test lines appeared in pre-wetting and post-sample application.",
+        "assumption": "Pre-wetting and post-sample application could be effective strategies or only the buffer moved to the test line.",
         "next_protocol_fixes": "Spot unlabeled secondary antibody on the control line instead of labeled secondary antibody."
     },
     {
@@ -59,43 +113,25 @@
             "Pre-wetting showed faint lines on test lines, no line in control."
         ],
         "image": "Link for the observation image",
-        "troubleshooting": [
-            {
-                "Possible Cause": "Control Line Antibody Not Binding",
-                "Explanation": "If the Goat Anti-Mouse IgG (Control Line Antibody) was not properly immobilized or dried, the secondary antibody won't bind.",
-                "Suggested Fix": "Ensure the control line antibody is applied correctly and dried properly before testing. Increase antibody amount if needed."
-            },
-            {
-                "Possible Cause": "Gold-Conjugated Secondary Antibody Not Reaching the Control Line",
-                "Explanation": "If too little secondary antibody is present, it may all bind at the test line, leaving none to reach the control line.",
-                "Suggested Fix": "Increase secondary antibody concentration (reduce dilution from 1:80 to 1:50)."
-            },
-            {
-                "Possible Cause": "Excess Sample or Buffer Preventing Flow",
-                "Explanation": "If too much sample or buffer was applied, the capillary action may be disrupted, preventing proper migration to the control line.",
-                "Suggested Fix": "Reduce sample volume (try 2-4 µL instead of 6 µL) and ensure running buffer is evenly applied."
-            },
-            {
-                "Possible Cause": "Improper Flow Rate (Viscosity Issues)",
-                "Explanation": "High viscosity or buffer imbalance could prevent full migration.",
-                "Suggested Fix": "Adjust Tween-20 concentration in buffer (try 0.05% instead of 0.1%)."
-            },
-            {
-                "Possible Cause": "Membrane Issues (Blocked or Non-Absorbent Control Line)",
-                "Explanation": "The membrane at the control line may be damaged or not absorbing properly.",
-                "Suggested Fix": "Use a new strip, check the manufacturing process, and confirm proper reagent drying."
-            },
-            {
-                "Possible Cause": "Gold Nanoparticles Aggregating",
-                "Explanation": "If the gold nanoparticles are clumping, they may bind at the test line but fail to move further.",
-                "Suggested Fix": "Vortex gently before use and store gold-conjugates at 4°C."
-            },
-            {
-                "Possible Cause": "Labeled Secondary Antibody in Control Line",
-                "Explanation": "The control line should be spotted with unlabeled secondary antibodies, but in our protocol, we spotted with labeled secondary antibody.",
-                "Suggested Fix": "Spot unlabeled secondary antibody on the control line."
-            }
-        ],
+        "troubleshooting": {
+            "possible_causes": [
+                {
+                    "cause": "Control Line Antibody Not Binding",
+                    "explanation": "If the Goat Anti-Mouse IgG (Control Line Antibody) was not properly immobilized or dried, the secondary antibody won't bind.",
+                    "suggested_fix": "Ensure the control line antibody is applied correctly and dried properly before testing. Increase antibody amount if needed."
+                },
+                {
+                    "cause": "Gold-Conjugated Secondary Antibody Not Reaching the Control Line",
+                    "explanation": "If too little secondary antibody is present, it may all bind at the test line, leaving none to reach the control line.",
+                    "suggested_fix": "Increase secondary antibody concentration (reduce dilution from 1:80 to 1:50)."
+                },
+                {
+                    "cause": "Excess Sample or Buffer Preventing Flow",
+                    "explanation": "If too much sample or buffer was applied, the capillary action may be disrupted, preventing proper migration to the control line.",
+                    "suggested_fix": "Reduce sample volume (try 2-4 µL instead of 6 µL) and ensure running buffer is evenly applied."
+                }
+            ]
+        },
         "major_problem": "Faint test lines but no control line observed.",
         "assumption": "Possible buffer migration issue or incorrect control line antibody application.",
         "next_protocol_fixes": "Try different buffer conditions and increase secondary antibody concentration."
