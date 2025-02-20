@@ -13,13 +13,12 @@
         .sidebar h2 { text-align: center; margin-bottom: 10px; }
         .date { padding: 5px; cursor: pointer; display: block; color: white; text-decoration: none; }
         .date:hover { background: #1ABC9C; }
-        .active-month { background: #1ABC9C; padding: 5px; }
 
         /* Main Content */
         .container { width: 60%; padding: 20px; }
         .log-entry { border: 1px solid #ccc; padding: 15px; margin: 15px 0; background: #f9f9f9; }
         .bold { font-weight: bold; margin-top: 10px; }
-        .collapsible { cursor: pointer; padding: 10px; border: none; background: #3498DB; color: white; margin-top: 10px; text-align: left; width: 100%; }
+        .collapsible { cursor: pointer; padding: 10px; border: none; background: #27AE60; color: white; margin-top: 10px; text-align: left; width: 100%; }
         .content { display: none; padding: 15px; border: 1px solid #ccc; margin-top: 5px; }
 
         /* Troubleshooting Table */
@@ -34,7 +33,13 @@
 
         /* Right Sidebar */
         .right-sidebar { width: 20%; background: #ECF0F1; padding: 15px; height: 100vh; overflow-y: auto; text-align: center; }
-        .right-sidebar button { width: 100%; padding: 10px; margin-top: 10px; background: #E74C3C; color: white; border: none; cursor: pointer; }
+        .right-sidebar button { width: 100%; padding: 10px; margin-top: 10px; background: #27AE60; color: white; border: none; cursor: pointer; font-size: 16px; }
+
+        /* Log Form */
+        .log-form-container { display: none; padding: 20px; border: 1px solid #ccc; background: #f9f9f9; margin-top: 10px; }
+        .log-form-container label { font-weight: bold; margin-top: 10px; display: block; }
+        .log-form-container textarea, .log-form-container input { width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px; }
+        .log-form-container button { background: #27AE60; color: white; padding: 10px; border: none; cursor: pointer; font-size: 16px; width: 100%; }
 
     </style>
 </head>
@@ -43,13 +48,65 @@
     <!-- Left Sidebar -->
     <div class="sidebar">
         <h2>LFA Log</h2>
-        <div class="active-month">February 2025</div>
         <div id="dateList"></div>
     </div>
 
     <!-- Main Content -->
     <div class="container">
         <h1>Lipo Protein A LFA Development Daily Log</h1>
+
+        <div id="logFormContainer" class="log-form-container">
+            <form id="logForm">
+                <label>Date:</label>
+                <input type="date" id="date" required>
+
+                <label>Objective:</label>
+                <textarea id="objective" rows="3" required></textarea>
+
+                <label>Protocol:</label>
+                <textarea id="protocol" rows="6" placeholder="Sample Pad Treatment:\n- Buffer: PBS\n- Surfactant: Tween-20" required></textarea>
+
+                <label>Observation:</label>
+                <textarea id="observation" rows="3" required></textarea>
+
+                <label>Observation Image (URL):</label>
+                <input type="text" id="imageLink" placeholder="Enter image URL">
+
+                <label>Inference:</label>
+                <textarea id="inference" rows="3" required></textarea>
+
+                <label>Most Likely Problem:</label>
+                <textarea id="mostLikelyProblem" rows="3" required></textarea>
+
+                <label>Fixes to Add in Next Protocol:</label>
+                <textarea id="nextFixes" rows="3" required></textarea>
+
+                <label>Troubleshooting (Table Format)</label>
+                <table id="troubleshootingTable">
+                    <tr>
+                        <th>Risk Factor</th>
+                        <th>Risk Level</th>
+                        <th>Explanation</th>
+                        <th>Mitigation Strategy</th>
+                    </tr>
+                    <tr>
+                        <td><input type="text" id="riskFactor" placeholder="Enter Risk Factor"></td>
+                        <td>
+                            <select id="riskLevel">
+                                <option value="low" class="low">Low</option>
+                                <option value="moderate" class="moderate">Moderate</option>
+                                <option value="high" class="high">High</option>
+                            </select>
+                        </td>
+                        <td><input type="text" id="explanation" placeholder="Enter Explanation"></td>
+                        <td><input type="text" id="mitigationStrategy" placeholder="Enter Mitigation Strategy"></td>
+                    </tr>
+                </table>
+                <button type="button" onclick="addTroubleshootingRow()">Add More</button>
+
+                <button type="submit">Submit Log</button>
+            </form>
+        </div>
 
         <div id="latestLog"></div>
 
@@ -63,37 +120,6 @@
         <button onclick="addRemark()">Add Remark</button>
     </div>
 
-    <!-- Log Form (Hidden Initially) -->
-    <div id="logFormContainer" style="display: none; padding: 20px;">
-        <form id="logForm">
-            <label>Date:</label>
-            <input type="date" id="date" required>
-
-            <label>Objective:</label>
-            <textarea id="objective" rows="3" required></textarea>
-
-            <label>Protocol:</label>
-            <textarea id="protocol" rows="6" placeholder="Sample Pad Treatment:\n- Buffer: PBS\n- Surfactant: Tween-20" required></textarea>
-
-            <label>Observation:</label>
-            <textarea id="observation" rows="3" required></textarea>
-
-            <label>Observation Image (URL):</label>
-            <input type="text" id="imageLink" placeholder="Enter image URL">
-
-            <label>Inference:</label>
-            <textarea id="inference" rows="3" required></textarea>
-
-            <label>Most Likely Problem:</label>
-            <textarea id="mostLikelyProblem" rows="3" required></textarea>
-
-            <label>Fixes to Add in Next Protocol:</label>
-            <textarea id="nextFixes" rows="3" required></textarea>
-
-            <button type="submit">Submit Log</button>
-        </form>
-    </div>
-
     <script>
         let logs = [];
 
@@ -101,20 +127,28 @@
             document.getElementById("logFormContainer").style.display = "block";
         }
 
+        function addTroubleshootingRow() {
+            let table = document.getElementById("troubleshootingTable");
+            let row = table.insertRow(-1);
+
+            row.innerHTML = `
+                <td><input type="text" placeholder="Enter Risk Factor"></td>
+                <td>
+                    <select>
+                        <option value="low" class="low">Low</option>
+                        <option value="moderate" class="moderate">Moderate</option>
+                        <option value="high" class="high">High</option>
+                    </select>
+                </td>
+                <td><input type="text" placeholder="Enter Explanation"></td>
+                <td><input type="text" placeholder="Enter Mitigation Strategy"></td>
+            `;
+        }
+
         document.getElementById("logForm").addEventListener("submit", function(event) {
             event.preventDefault();
 
-            let logEntry = {
-                date: document.getElementById("date").value,
-                objective: document.getElementById("objective").value,
-                protocol: document.getElementById("protocol").value.replace(/\n/g, "<br>"),
-                observation: document.getElementById("observation").value,
-                imageLink: document.getElementById("imageLink").value,
-                inference: document.getElementById("inference").value,
-                mostLikelyProblem: document.getElementById("mostLikelyProblem").value,
-                nextFixes: document.getElementById("nextFixes").value
-            };
-
+            let logEntry = { date: document.getElementById("date").value };
             logs.unshift(logEntry);
             updateLogs();
             document.getElementById("logForm").reset();
@@ -122,42 +156,8 @@
         });
 
         function updateLogs() {
-            let latestLog = logs.length > 0 ? logs[0] : null;
-            let previousLogs = logs.slice(1);
-
-            document.getElementById("latestLog").innerHTML = latestLog ? generateLogHTML(latestLog) : "<p>No logs yet.</p>";
-
-            let previousLogsHTML = "";
-            previousLogs.forEach((log, index) => {
-                previousLogsHTML += `
-                    <button class="collapsible" onclick="toggleCollapse(this)">${log.date}</button>
-                    <div class="content">${generateLogHTML(log)}</div>
-                `;
-            });
-            document.getElementById("previousLogs").innerHTML = previousLogsHTML;
-
-            let dateListHTML = logs.map(log => `<a class="date">${log.date}</a>`).join("");
-            document.getElementById("dateList").innerHTML = dateListHTML;
-        }
-
-        function generateLogHTML(log) {
-            return `
-                <div class="log-entry">
-                    <h3>${log.date}</h3>
-                    <p><b>Objective:</b> ${log.objective}</p>
-                    <p><b>Protocol:</b> ${log.protocol}</p>
-                    <p><b>Observation:</b> ${log.observation}</p>
-                    <p><b>Inference:</b> ${log.inference}</p>
-                    <p><b>Most Likely Problem:</b> ${log.mostLikelyProblem}</p>
-                    <p><b>Fixes to Add in Next Protocol:</b> ${log.nextFixes}</p>
-                    ${log.imageLink ? `<img src="${log.imageLink}" width="200">` : ""}
-                </div>
-            `;
-        }
-
-        function toggleCollapse(button) {
-            let content = button.nextElementSibling;
-            content.style.display = content.style.display === "block" ? "none" : "block";
+            let latestLog = logs.length > 0 ? logs[0] : "<p>No logs yet.</p>";
+            document.getElementById("latestLog").innerHTML = latestLog;
         }
 
     </script>
